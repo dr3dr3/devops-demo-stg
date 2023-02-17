@@ -8,13 +8,25 @@ on:
     types: [deploy-stage]
 
 jobs:
-  # Add tag for next version
-  test-echo:
-    name: Add Tag
-    if: ${{ !github.event.client_payload.paused }}
-    timeout-minutes: 10
-    runs-on: ubuntu-latest    
-    steps:
 
-      - name: Quick echo
-        run: echo "Dispatch worked"
+  # Build static site using Reveal-MD
+  build-stg:
+    name: Build STG
+    if: ${{ !github.event.client_payload.paused }}
+    uses: https://github.com/dr3dr3/devops-via-preso/tree/main/.github/workflows/reuse-build-revealmd.yml
+    with: 
+      target-ref: ${{ !github.event.client_payload.target_ref }}
+      deploy-stage: 'stg'
+
+  # Deploy to GitHub Pages on the Stage Repo
+  deploy-to-github-pages:
+    name: Deploy GHP(STG)
+    needs: build-stg
+    uses: https://github.com/dr3dr3/devops-via-preso/tree/main/.github/workflows/reuse-deploy-github-pages.yml
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    with:
+      target-ref: ${{ !github.event.client_payload.target_ref }}
+      deploy-stage: 'stg'
