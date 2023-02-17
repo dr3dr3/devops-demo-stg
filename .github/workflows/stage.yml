@@ -31,3 +31,4 @@ jobs:
     with:
       target-ref: ${{ github.event.client_payload.target_ref }}
       deploy-stage: 'stg'
+    secrets: inherit
