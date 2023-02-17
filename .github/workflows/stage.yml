@@ -29,5 +29,5 @@ jobs:
       pages: write
       id-token: write
     with:
-      target-ref: ${{ !github.event.client_payload.target_ref }}
+      target-ref: ${{ github.event.client_payload.target_ref }}
       deploy-stage: 'stg'
