@@ -1,5 +1,5 @@
 # Continuous Deployment Workflow for Stage
-name: stage
+name: stage-deploy
 run-name: Continuous deployment triggered by ${{ github.event_name }}
 
 on:
@@ -13,7 +13,7 @@ jobs:
   build-stg:
     name: Build STG
     if: ${{ !github.event.client_payload.paused }}
-    uses: https://github.com/dr3dr3/devops-via-preso/tree/main/.github/workflows/reuse-build-revealmd.yml
+    uses: https://github.com/dr3dr3/devops-via-preso/tree/main/.github/workflows/reuse-build-revealmd.yml@main
     with: 
       target-ref: ${{ !github.event.client_payload.target_ref }}
       deploy-stage: 'stg'
@@ -22,7 +22,7 @@ jobs:
   deploy-to-github-pages:
     name: Deploy GHP(STG)
     needs: build-stg
-    uses: https://github.com/dr3dr3/devops-via-preso/tree/main/.github/workflows/reuse-deploy-github-pages.yml
+    uses: https://github.com/dr3dr3/devops-via-preso/tree/main/.github/workflows/reuse-deploy-github-pages.yml@main
     permissions:
       contents: read
       pages: write
