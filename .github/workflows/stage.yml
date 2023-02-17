@@ -17,7 +17,7 @@ jobs:
     with: 
       target-ref: ${{ !github.event.client_payload.target_ref }}
       deploy-stage: 'stg'
-      envPAT: ${{ secrets.TAG_MAIN }}
+      envPAT: ${{ secrets.GHA_PAT }}
 
   # Deploy to GitHub Pages on the Stage Repo
   deploy-to-github-pages:
