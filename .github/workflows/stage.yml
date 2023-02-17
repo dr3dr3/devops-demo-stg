@@ -1,0 +1,20 @@
+# Continuous Deployment Workflow for Stage
+name: stage
+run-name: Continuous deployment triggered by ${{ github.event_name }}
+
+on:
+  # Runs on pushes targeting the default branch
+  repository_dispatch:
+    types: [deploy-stage]
+
+jobs:
+  # Add tag for next version
+  test-echo:
+    name: Add Tag
+    if: ${{ !github.event.client_payload.paused }}
+    timeout-minutes: 10
+    runs-on: ubuntu-latest    
+    steps:
+
+      - name: Quick echo
+        run: echo "Dispatch worked"
