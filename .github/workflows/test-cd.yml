@@ -12,14 +12,15 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest  
     env:
-      GITHUB_TOKEN: ${{ secrets.GHA_PAT }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # ${{ secrets.GHA_PAT }}
       OWNER: ${{ github.repository_owner }}
       REPO_NAME: 'devops-demo-stg'
     steps:
 
       - name: Checkout 🛎️
         uses: actions/checkout@v3
-        
+
       - name: Check Paused
         id: check
         # Get issues with labels from STG/CAN/PRD repo
