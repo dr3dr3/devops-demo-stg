@@ -1,8 +1,9 @@
-# Continuous Delivery
-name: continuous-delivery
-run-name: CD pipeline to deploy to Stage
+# Continuous Delivery pipeline to deploy to target environment (GitHub repos for GitHub Pages)
+name: test-continuous-delivery
+run-name: CD pipeline to deploy
 
-on: 
+on:
+
   workflow_call:
     inputs:
       target-ref:
@@ -12,6 +13,7 @@ on:
         required: true
         type: string
         default: 'ci'
+
   workflow_dispatch:
     inputs:
       target-ref:
@@ -44,6 +46,10 @@ jobs:
 
       - name: Checkout 🛎️
         uses: actions/checkout@v3
+        with: 
+          repository: ${{ format('{0}-{1}', 'dr3dr3/devops-via-preso', inputs.deploy-target) }}
+          ref: ${{ inputs.target-ref }}
+          token: ${{ secrets.GHA_PAT }}
 
       - name: Check Paused
         id: check
@@ -53,12 +59,12 @@ jobs:
           echo "$issues"
           echo "CHECK=$issues" >> $GITHUB_OUTPUT
 
-      - name: Send Dispatch
+      - name: Dispatch for Stage
         if: ${{ steps.check.outputs.CHECK == 0 && inputs.deploy-target != 'ci' }}
         run: |
           curl -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Authorization: token ${{ secrets.GHA_PAT }}" \
-          --request POST --data '{"event_type": "deploy-stage", "client_payload": {"paused": true, "target_ref": "main"}}' \
+          --request POST --data '{"event_type": "deploy-stage", "client_payload": {"paused": true, "target_ref": "${{ inputs.target-ref }}"}}' \
           https://api.github.com/repos/${{ github.repository_owner }}/${{ format('{0}-{1}', 'devops-demo', inputs.deploy-target) }}/dispatches
           echo "Success"
           

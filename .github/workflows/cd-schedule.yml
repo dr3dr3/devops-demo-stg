@@ -1,0 +1,20 @@
+# Continuous Delivery
+name: test-continuous-delivery
+run-name: CD pipeline to deploy to Stage
+
+on:
+  schedule:
+    - chron: '55 19 * * 1,2,3,4,5'  # Daily run for Canary deployments
+    - chron: '55 19 * * 1'          # Weekly run for Production deployments
+    - chron: '45 23 * * *'          # Test
+
+jobs:
+
+  # Scheduled dispatch to deploy Stage (Test)
+  dispatch-deploy-stage:
+    name: Dispatch
+    if: github.event.schedule != '45 23 * * *'
+    uses: ./.github/workflows/test-cd.yml@main
+    with: 
+      target-ref: 'main'
+      deploy-stage: 'stg'
