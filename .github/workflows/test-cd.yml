@@ -37,7 +37,9 @@ jobs:
   dispatch-stage:
     name: Dispatch to Stage
     timeout-minutes: 10
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}    
     steps:
 
       - name: Checkout 🛎️
