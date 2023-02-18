@@ -17,6 +17,9 @@ jobs:
       REPO_NAME: 'devops-demo-stg'
     steps:
 
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        
       - name: Check Paused
         id: check
         # Get issues with labels from STG/CAN/PRD repo
