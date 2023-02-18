@@ -25,7 +25,7 @@ jobs:
         id: check
         # Get issues with labels from STG/CAN/PRD repo
         run: |
-          count="$(gh issue list --search 'label:deploy-paused')" || 0
+          count="$(gh issue list --label 'deploy-pasued' --state open)" || 0
           echo "$count"
           echo "CHECK=$count" >> $GITHUB_OUTPUT
 
