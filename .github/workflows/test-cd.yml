@@ -25,12 +25,12 @@ jobs:
         id: check
         # Get issues with labels from STG/CAN/PRD repo
         run: |
-          count="$(gh issue list)" || 0
+          count="$(gh issue list --label "deploy-paused" --state open  --jq length)" || 0
           echo "$count"
           echo "CHECK=$count" >> $GITHUB_OUTPUT
 
       - name: Send Dispatch
-        if: ${{ steps.check.outputs.CHECK != 0 }}
+        if: ${{ steps.check.outputs.CHECK == 1 }}
         run: |
           echo "Success"
           
