@@ -1,0 +1,32 @@
+# Continuous Delivery
+name: continuous-delivery
+run-name: CD pipeline to deploy to Stage
+
+on: workflow_dispatch
+
+jobs:
+
+  # Dispatch send to trigger deployment to Stage (separate repo)
+  dispatch-stage:
+    name: Dispatch to Stage
+    timeout-minutes: 10
+    runs-on: ubuntu-latest  
+    env:
+      GITHUB_TOKEN: ${{ secrets.GHA_PAT }}
+      OWNER: ${{ github.repository_owner }}
+      REPO_NAME: 'devops-demo-stg'
+    steps:
+
+      - name: Check Paused
+        id: check
+        # Get issues with labels from STG/CAN/PRD repo
+        run: |
+          count="$(gh issue list --search 'label:deploy-paused')" || 0
+          echo "$count"
+          echo "CHECK=$count" >> $GITHUB_OUTPUT
+
+      - name: Send Dispatch
+        if: ${{ steps.check.outputs.CHECK != 0 }}
+        run: |
+          echo "Success"
+          
