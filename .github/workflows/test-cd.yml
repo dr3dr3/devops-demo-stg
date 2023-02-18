@@ -1,6 +1,6 @@
 # Continuous Delivery pipeline to deploy to target environment (GitHub repos for GitHub Pages)
-name: test-schedule-deploy
-run-name: CD pipeline to deploy
+name: test-continuous-delivery
+run-name: CD pipeline to deploy to 
 
 on:
 

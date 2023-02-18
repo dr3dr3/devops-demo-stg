@@ -1,5 +1,5 @@
 # Continuous Delivery
-name: test-continuous-delivery
+name: test-schedule-deploy
 run-name: CD pipeline scheduled deployments
 
 on:
@@ -15,7 +15,7 @@ jobs:
   dispatch-deploy-stage:
     name: Dispatch
     if: github.event.schedule != '45 23 * * *'
-    uses: ./.github/workflows/test-cd.yml@main
+    uses: ./.github/workflows/test-cd.yml
     with: 
       target-ref: 'main'
       deploy-stage: 'stg'
