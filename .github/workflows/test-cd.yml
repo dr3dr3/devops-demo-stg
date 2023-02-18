@@ -2,7 +2,34 @@
 name: continuous-delivery
 run-name: CD pipeline to deploy to Stage
 
-on: workflow_dispatch
+on: 
+  workflow_call:
+    inputs:
+      target-ref:
+        required: true
+        type: string
+      deploy-target:
+        required: true
+        type: string
+        default: 'ci'
+  workflow_dispatch:
+    inputs:
+      target-ref:
+        description: 'Tag or Main'
+        required: true
+        default: 'main'
+        type: string
+      deploy-target:
+        description: 'Deployment target'
+        required: true
+        default: 'ci'
+        type: choice
+        options:
+        - ci
+        - stg
+        - can
+        - prd
+
 
 jobs:
 
@@ -11,11 +38,6 @@ jobs:
     name: Dispatch to Stage
     timeout-minutes: 10
     runs-on: ubuntu-latest  
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      DISPATCH_TOKEN: ${{ secrets.GHA_PAT }}
-      OWNER: ${{ github.repository_owner }}
-      REPO_NAME: 'devops-demo-stg'
     steps:
 
       - name: Checkout 🛎️
@@ -30,11 +52,11 @@ jobs:
           echo "CHECK=$issues" >> $GITHUB_OUTPUT
 
       - name: Send Dispatch
-        if: ${{ steps.check.outputs.CHECK == 0 }}
+        if: ${{ steps.check.outputs.CHECK == 0 && inputs.deploy-target != 'ci' }}
         run: |
           curl -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Authorization: token ${{ secrets.GHA_PAT }}" \
           --request POST --data '{"event_type": "deploy-stage", "client_payload": {"paused": true, "target_ref": "main"}}' \
-          https://api.github.com/repos/dr3dr3/devops-demo-stg/dispatches
+          https://api.github.com/repos/${{ github.repository_owner }}/${{ format('{0}-{1}', 'devops-demo', inputs.deploy-target) }}/dispatches
           echo "Success"
           
