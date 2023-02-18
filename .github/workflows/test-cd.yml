@@ -32,6 +32,6 @@ jobs:
       - name: Send Dispatch
         if: ${{ steps.check.outputs.CHECK == 0 }}
         run: |
-          curl -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: token ${DISPATCH_TOKEN}" --request POST --data '{"event_type": "deploy", "client_payload": {"paused": true, "target_ref": "main"}}' https://api.github.com/repos/${OWNER}/${REPO}/dispatches
+          curl -H "Accept: application/vnd.github.everest-preview+json" -H "Authorization: token ${DISPATCH_TOKEN}" --request POST --data '{"event_type": "deploy", "client_payload": {"paused": false, "target_ref": "main"}}' https://api.github.com/repos/${OWNER}/${REPO}/dispatches
           echo "Success"
           
