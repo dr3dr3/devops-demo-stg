@@ -5,7 +5,7 @@ run-name: Continuous deployment triggered by ${{ github.event_name }}
 on:
   # Runs on pushes targeting the default branch
   repository_dispatch:
-    types: [deploy]
+    types: [deploy-stage]
 
 jobs:
 
