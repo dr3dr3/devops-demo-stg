@@ -9,6 +9,23 @@ on:
     - cron: '55 23 * * *'          # Test
     - cron: '40 01 * * *'          # Test 2
 
+  workflow_dispatch:
+    inputs:
+      target-ref:
+        description: 'Tag or Main'
+        required: true
+        default: 'main'
+        type: string
+      deploy-target:
+        description: 'Deployment target'
+        required: true
+        default: 'stg'
+        type: choice
+        options:
+        - stg
+        - can
+        - prd
+
 jobs:
 
   # Scheduled dispatch to deploy Stage (Test)
