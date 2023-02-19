@@ -40,7 +40,8 @@ jobs:
     name: Dispatch to Stage
     timeout-minutes: 10
     runs-on: ubuntu-latest
- 
+    env:
+      GH_TOKEN: ${{ github.token }}    
     steps:
 
       - name: Checkout 🛎️
@@ -48,7 +49,7 @@ jobs:
         with: 
           repository: ${{ format('{0}-{1}', 'dr3dr3/devops-demo', inputs.deploy-target) }}
           ref: ${{ inputs.target-ref }}
-          GH_TOKEN: ${{ github.token }}
+          #token: ${{ github.token }}
 
       - name: Check Paused
         id: check
