@@ -36,3 +36,4 @@ jobs:
     with: 
       target-ref: 'main'
       deploy-target: 'stg'
+    #secrets: inherit      

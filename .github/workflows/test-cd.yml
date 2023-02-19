@@ -44,7 +44,7 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GHA_PAT }}
+      GITHUB_TOKEN: ${{ secrets.envPAT || secrets.GHA_PAT }}
     steps:
 
       - name: Checkout 🛎️
