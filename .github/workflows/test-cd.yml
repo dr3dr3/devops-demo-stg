@@ -1,6 +1,6 @@
 # Continuous Delivery pipeline to deploy to target environment (GitHub repos for GitHub Pages)
 name: test-continuous-delivery
-run-name: CD pipeline to deploy to 
+run-name: CD pipeline
 
 on:
 
@@ -43,7 +43,8 @@ jobs:
     name: Dispatch to Stage
     timeout-minutes: 10
     runs-on: ubuntu-latest
-
+    env:
+      GITHUB_TOKEN: ${{ secrets.GHA_PAT }}
     steps:
 
       - name: Checkout 🛎️
@@ -51,7 +52,7 @@ jobs:
         with: 
           repository: ${{ format('{0}-{1}', 'dr3dr3/devops-demo', inputs.deploy-target) }}
           ref: ${{ inputs.target-ref }}
-          token: ${{ secrets.GITHUB_TOKEN }} 
+          token: ${{ secrets.GHA_PAT }}
 
       - name: Check Paused
         id: check
@@ -67,7 +68,7 @@ jobs:
         if: ${{ steps.check.outputs.CHECK == 0 && inputs.deploy-target != 'ci' }}
         run: |
           curl -H "Accept: application/vnd.github.everest-preview+json" \
-          -H "Authorization: token ${{ secrets.GHA_PAT }}" \
+          -H "Authorization: token ${GITHUB_TOKEN}" \
           --request POST --data '{"event_type": "deploy-stage", "client_payload": {"paused": true, "target_ref": "${{ inputs.target-ref }}"}}' \
           https://api.github.com/repos/${{ github.repository_owner }}/${{ format('{0}-{1}', 'devops-demo', inputs.deploy-target) }}/dispatches
           echo "Success"
