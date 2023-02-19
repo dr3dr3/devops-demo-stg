@@ -64,7 +64,7 @@ jobs:
         run: |
           curl -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Authorization: token ${{ secrets.GHA_PAT }}" \
-          --request POST --data '{"event_type": "deploy", "client_payload": {"paused": true, "target_ref": "${{ inputs.target-ref }}"}}' \
+          --request POST --data '{"event_type": "deploy", "client_payload": {"paused": false, "target_ref": "${{ inputs.target-ref }}"}}' \
           https://api.github.com/repos/${{ github.repository_owner }}/${{ format('{0}-{1}', 'devops-demo', inputs.deploy-target) }}/dispatches
           echo "Success"
           

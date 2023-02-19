@@ -1,5 +1,5 @@
 # Continuous Deployment Workflow for Stage
-name: stage-deploy
+name: deploy-to-stage
 run-name: Continuous deployment triggered by ${{ github.event_name }}
 
 on:
