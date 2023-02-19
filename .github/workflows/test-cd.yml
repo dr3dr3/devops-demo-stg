@@ -13,6 +13,9 @@ on:
         required: true
         type: string
         default: 'ci'
+    secrets:
+      envPAT:
+        required: false
 
   workflow_dispatch:
     inputs:
@@ -40,8 +43,7 @@ jobs:
     name: Dispatch to Stage
     timeout-minutes: 10
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.GHA_PAT }}    
+
     steps:
 
       - name: Checkout 🛎️
@@ -49,11 +51,13 @@ jobs:
         with: 
           repository: ${{ format('{0}-{1}', 'dr3dr3/devops-demo', inputs.deploy-target) }}
           ref: ${{ inputs.target-ref }}
-          token: ${{ secrets.GHA_PAT }}
+          token: ${{ secrets.envPAT || github.token }}
 
       - name: Check Paused
         id: check
         # Get issues with labels from STG/CAN/PRD repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
         run: |
           issues="$(gh issue list --label "deploy-paused" --state open)" || 0
           echo "$issues"
