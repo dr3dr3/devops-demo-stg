@@ -1,6 +1,6 @@
 # Continuous Deployment Workflow for Stage
-name: deploy-to-stage
-run-name: Continuous deployment triggered by ${{ github.event_name }}
+name: DEPLOY-TO-STAGE
+run-name: Continuous deployment triggered for Stage Environment
 
 on:
   # Runs on pushes targeting the default branch
@@ -13,7 +13,7 @@ jobs:
   build-stg:
     name: Build STG
     if: ${{ !github.event.client_payload.paused }}
-    uses: dr3dr3/devops-via-preso/.github/workflows/reuse-build-revealmd.yml@main
+    uses: dr3dr3/devops-demo/.github/workflows/build-revealmd.yml@main
     with: 
       target-ref: ${{ github.event.client_payload.target_ref }}
       deploy-target: 'stg'
@@ -23,12 +23,13 @@ jobs:
   deploy-to-github-pages:
     name: Deploy GHP(STG)
     needs: build-stg
-    uses: dr3dr3/devops-via-preso/.github/workflows/reuse-deploy-github-pages.yml@main
+    uses: dr3dr3/devops-demo/.github/workflows/deploy-github-pages.yml@main
     permissions:
       contents: read
       pages: write
       id-token: write
     with:
       target-ref: ${{ github.event.client_payload.target_ref }}
+      artefact-ref: ${{ github.event.client_payload.target_ref }}      
       deploy-target: 'stg'
     secrets: inherit
