@@ -13,7 +13,7 @@ jobs:
   build-stg:
     name: Build STG
     if: ${{ !github.event.client_payload.paused }}
-    uses: dr3dr3/devops-demo/.github/workflows/build-revealmd.yml@main
+    uses: dr3dr3/ss-pipeline/.github/workflows/build-revealmd.yml@main
     with: 
       target-ref: ${{ github.event.client_payload.target_ref }}
       deploy-target: 'stg'
@@ -23,7 +23,7 @@ jobs:
   deploy-to-github-pages:
     name: Deploy GHP(STG)
     needs: build-stg
-    uses: dr3dr3/devops-demo/.github/workflows/deploy-github-pages.yml@main
+    uses: dr3dr3/ss-pipeline/.github/workflows/deploy-github-pages.yml@main
     permissions:
       contents: read
       pages: write
