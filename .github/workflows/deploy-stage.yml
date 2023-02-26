@@ -16,6 +16,7 @@ jobs:
     uses: dr3dr3/ss-pipeline/.github/workflows/build-revealmd.yml@main
     with: 
       target-ref: ${{ github.event.client_payload.target_ref }}
+      artefact-ref: ${{ github.event.client_payload.target_ref }}
       deploy-target: 'stg'
     secrets: inherit
 
