@@ -1,6 +1,6 @@
 # Continuous Deployment Workflow for Stage
 name: DEPLOY-TO-STAGE
-run-name: Continuous deployment triggered for Stage Environment
+run-name: Continuous delivery triggered for Stage Environment
 
 on:
   # Runs on pushes targeting the default branch
