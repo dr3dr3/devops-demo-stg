@@ -17,6 +17,7 @@ jobs:
       target-ref: 'main'
       deploy-target: 'stg'
     permissions:
+      contents: read
       pages: write
       id-token: write
     secrets: inherit
