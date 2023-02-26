@@ -34,7 +34,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v3
         with:
-          name: ${{ format('{0}-{1}_{2}', inputs.deploy-target, 'build', inputs.artefact-ref) }}
+          name: ${{ format('{0}-{1}_{2}', inputs.deploy-target, 'build', 'reveal-md') }}
           path: _site/slides
 
       # Add placeholder index.html
