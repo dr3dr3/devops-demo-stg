@@ -15,7 +15,6 @@ jobs:
     with: 
       from-soln: ${{ github.event.client_payload.from_soln }}
       target-ref: ${{ github.event.client_payload.target_ref }}
-      #target-deploy: 'stg'
     permissions:
       contents: read
       pages: write
