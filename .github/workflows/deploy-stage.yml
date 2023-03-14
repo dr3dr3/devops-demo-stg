@@ -12,9 +12,9 @@ jobs:
   continuous-delivery:
     name: CD
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
-    #with: 
-      #target-soln: ${{ github.event.client_payload.trigger }}
-      #target-ref: ${{ github.event.client_payload.target-ref }}
+    with: 
+      from-soln: ${{ github.event.client_payload.trigger }}
+      target-ref: ${{ github.event.client_payload.target-ref }}
       #target-deploy: 'stg'
     permissions:
       contents: read
