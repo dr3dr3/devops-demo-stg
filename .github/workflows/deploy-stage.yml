@@ -1,6 +1,5 @@
-# Continuous Deployment Workflow for Stage
 name: DEPLOY-TO-STAGE
-run-name: Continuous delivery triggered for Stage Environment
+run-name: Continuous Deployment for Stage Environment
 
 on:
   # Runs on pushes targeting the default branch
@@ -13,9 +12,10 @@ jobs:
   continuous-delivery:
     name: CD
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
-    with: 
-      target-ref: 'main'
-      deploy-target: 'stg'
+    #with: 
+      #target-soln: ${{ github.event.client_payload.trigger }}
+      #target-ref: ${{ github.event.client_payload.target-ref }}
+      #target-deploy: 'stg'
     permissions:
       contents: read
       pages: write
