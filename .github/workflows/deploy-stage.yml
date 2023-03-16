@@ -31,7 +31,7 @@ jobs:
     with:
       config-item: '.deploy.revealmd.build.stg'
       config-value: ${{ github.event.client_payload.target_ref }}
-    #secrets: inherit
+    secrets: inherit
 
   # Dispatch to Deploy to Canary Environment
   dispatch-can:
