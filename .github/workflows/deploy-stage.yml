@@ -37,7 +37,7 @@ jobs:
   dispatch-can:
     name: Dispatch Canary
     needs: [continuous-delivery]
-    uses: dr3dr3/ss-pipeline/.github/workflows/continuous-deployment.yml
+    uses: dr3dr3/ss-pipeline/.github/workflows/continuous-deployment.yml@main
     with:
       from-soln: ${{ github.event.client_payload.from_soln }}
       target-ref: ${{ github.event.client_payload.target_ref }}
