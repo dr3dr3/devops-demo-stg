@@ -27,7 +27,7 @@ jobs:
   dispatch-can:
     name: Dispatch Canary
     needs: [continuous-delivery]
-    uses: dr3dr3/ss-pipeline/.github/workflows/continuous-deployment.yml@main
+    uses: dr3dr3/ss-pipeline/.github/workflows/deployment-dispatch.yml@main
     with:
       target-deploy: 'can'
     secrets: inherit
