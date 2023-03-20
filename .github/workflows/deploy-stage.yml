@@ -11,27 +11,16 @@ jobs:
   # Continuous delivery workflow in 'ss-pipeline' repo
   continuous-delivery:
     name: CD
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: false  
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
-      from-soln: ${{ github.event.client_payload.from_soln }}
-      target-ref: ${{ github.event.client_payload.target_ref }}
       target-deploy: 'stg'
     permissions:
       contents: read
       pages: write
       id-token: write
-    secrets: inherit
-
-  ### Add testing specific for STG (integration, broken links, etc)
-
-  # Given successful testing then update the build for this environment in GitOps Config
-  build-config:
-    name: Update Build Config
-    needs: [continuous-delivery]
-    uses: dr3dr3/ss-pipeline/.github/workflows/gitops-update.yml@main
-    with:
-      config-item: '.deploy.revealmd.build.stg'
-      config-value: ${{ github.event.client_payload.target_ref }}
     secrets: inherit
 
   # Dispatch to Deploy to Canary Environment
@@ -40,7 +29,5 @@ jobs:
     needs: [continuous-delivery]
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-deployment.yml@main
     with:
-      from-soln: ${{ github.event.client_payload.from_soln }}
-      target-ref: ${{ github.event.client_payload.target_ref }}
       target-deploy: 'can'
     secrets: inherit
