@@ -1,5 +1,5 @@
 name: DEPLOY-TO-STAGE
-run-name: Continuous Deployment for Stage Environment
+run-name: Continuous deployment for Stage environment
 
 on:
   # Runs on pushes targeting the default branch
