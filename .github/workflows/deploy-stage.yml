@@ -24,11 +24,13 @@ jobs:
       id-token: write
     secrets: inherit
 
-  # Dispatch to Deploy to Canary Environment
-  dispatch-can:
-    name: Dispatch Canary
-    needs: [continuous-delivery]
-    uses: dr3dr3/ss-pipeline/.github/workflows/deployment-dispatch.yml@main
-    with:
-      target-deploy: 'can'
-    secrets: inherit
+  # # Dispatch to Deploy to Canary Environment
+  # dispatch-can:
+  #   name: Dispatch Canary
+  #   needs: [continuous-delivery]
+  #   uses: dr3dr3/ss-pipeline/.github/workflows/deployment-dispatch.yml@main
+  #   with:
+  #     target-deploy: 'can'
+  #     site-url: 'https://www.andredreyer.com'
+  #     target-repo: 'devops-demo-blue'      
+  #   secrets: inherit
