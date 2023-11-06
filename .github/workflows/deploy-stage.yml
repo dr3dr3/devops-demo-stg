@@ -24,13 +24,38 @@ jobs:
       id-token: write
     secrets: inherit
 
-  # # Dispatch to Deploy to Canary Environment
-  # dispatch-can:
-  #   name: Dispatch Canary
-  #   needs: [continuous-delivery]
-  #   uses: dr3dr3/ss-pipeline/.github/workflows/deployment-dispatch.yml@main
-  #   with:
-  #     target-deploy: 'can'
-  #     site-url: 'https://www.andredreyer.com'
-  #     target-repo: 'devops-demo-blue'      
-  #   secrets: inherit
+  config-deploy:
+    name: Get config for CI deployment
+    needs: [continuous-delivery]
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    outputs:
+      stage-repo: ${{ steps.setoutput.outputs.REF }}
+      site-url: ${{ steps.setoutput.outputs.URL }}
+    steps:
+
+    - name: Checkout GitOps
+      uses: actions/checkout@v3
+      with:
+        repository: 'dr3dr3/ss-gitops'
+        ref: 'main'
+        token: ${{ secrets.GHA_PAT }}
+
+    - name: Output Config
+      id: setoutput
+      run: |
+        ref="$(yq '.repositories.deployment.green.ref' 'repositories.yml')" || 'ERROR'
+        echo "REF=$ref" >> $GITHUB_OUTPUT
+        url="$(yq '.repositories.deployment.green.site-url' 'repositories.yml')" || 'ERROR'
+        echo "URL=$url" >> $GITHUB_OUTPUT
+
+  # Dispatch to deploy to Production (Blue) environment
+  dispatch:
+    name: Dispatch Blue
+    needs: [continuous-delivery, config-deploy]
+    uses: dr3dr3/ss-pipeline/.github/workflows/deployment-dispatch.yml@main
+    with:
+      target-deploy: 'can'
+      site-url: ${{ needs.config-deploy.outputs.site-url }}
+      target-repo: ${{ needs.config-deploy.outputs.stage-repo }}     
+    secrets: inherit
