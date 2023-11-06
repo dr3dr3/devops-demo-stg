@@ -25,7 +25,7 @@ jobs:
     secrets: inherit
 
   config-deploy:
-    name: Get config for CI deployment
+    name: Get config for Production (blue/green) deployment
     needs: [continuous-delivery]
     timeout-minutes: 10
     runs-on: ubuntu-latest
@@ -44,9 +44,9 @@ jobs:
     - name: Output Config
       id: setoutput
       run: |
-        ref="$(yq '.repositories.deployment.green.ref' 'repositories.yml')" || 'ERROR'
+        ref="$(yq '.repositories.deployment.blue.ref' 'repositories.yml')" || 'ERROR'
         echo "REF=$ref" >> $GITHUB_OUTPUT
-        url="$(yq '.repositories.deployment.green.site-url' 'repositories.yml')" || 'ERROR'
+        url="$(yq '.repositories.deployment.blue.site-url' 'repositories.yml')" || 'ERROR'
         echo "URL=$url" >> $GITHUB_OUTPUT
 
   # Dispatch to deploy to Production (Blue) environment
