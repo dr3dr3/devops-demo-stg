@@ -17,7 +17,7 @@ jobs:
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
       target-deploy: 'stg'
-      site-url: ${{ vars.SITE_URL }}
+      site-url: ${{ github.event.client_payload.site-url }}
     permissions:
       contents: read
       pages: write
