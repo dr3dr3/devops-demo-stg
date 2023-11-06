@@ -55,7 +55,7 @@ jobs:
     needs: [continuous-delivery, config-deploy]
     uses: dr3dr3/ss-pipeline/.github/workflows/deployment-dispatch.yml@main
     with:
-      target-deploy: 'can'
+      target-deploy: 'blue'
       site-url: ${{ needs.config-deploy.outputs.site-url }}
       target-repo: ${{ needs.config-deploy.outputs.stage-repo }}     
     secrets: inherit
