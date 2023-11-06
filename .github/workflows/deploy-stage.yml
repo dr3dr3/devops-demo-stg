@@ -17,6 +17,7 @@ jobs:
     uses: dr3dr3/ss-pipeline/.github/workflows/continuous-delivery.yml@main
     with: 
       target-deploy: 'stg'
+      blue-green: 'blue'
       site-url: ${{ github.event.client_payload.site-url }}
     permissions:
       contents: read
@@ -44,9 +45,9 @@ jobs:
     - name: Output Config
       id: setoutput
       run: |
-        ref="$(yq '.repositories.deployment.blue.ref' 'repositories.yml')" || 'ERROR'
+        ref="$(yq '.repositories.deployment.prd.ref' 'repositories.yml')" || 'ERROR'
         echo "REF=$ref" >> $GITHUB_OUTPUT
-        url="$(yq '.repositories.deployment.blue.site-url' 'repositories.yml')" || 'ERROR'
+        url="$(yq '.repositories.deployment.prd.site-url' 'repositories.yml')" || 'ERROR'
         echo "URL=$url" >> $GITHUB_OUTPUT
 
   # Dispatch to deploy to Production (Blue) environment
@@ -55,7 +56,7 @@ jobs:
     needs: [continuous-delivery, config-deploy]
     uses: dr3dr3/ss-pipeline/.github/workflows/deployment-dispatch.yml@main
     with:
-      target-deploy: 'blue'
+      blue-green: 'blue'
       site-url: ${{ needs.config-deploy.outputs.site-url }}
-      target-repo: ${{ needs.config-deploy.outputs.stage-repo }}     
+      target-repo: ${{ needs.config-deploy.outputs.stage-repo }}
     secrets: inherit
